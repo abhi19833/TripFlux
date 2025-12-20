@@ -10,43 +10,51 @@ router.post("/", async (req, res) => {
   let promptDraft = "";
 
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(200).json({
+        response: "AI feature is currently unavailable.",
+      });
+    }
+
     const activeModel = geminiClient.getGenerativeModel({
       model: "gemini-2.5-flash",
     });
 
     if (type === "itinerary") {
-      promptDraft = `Please make a ${
+      promptDraft = `Create a ${
         incomingData.days || 2
-      }-day travel plan for ${incomingData.destination}. 
-      The user like ${incomingData.interests}. 
-      Add places to visit, timings and some activities. 
-      Keep it short (around 15–20 lines).`;
+      }-day travel itinerary for ${incomingData.destination}. 
+User interests: ${incomingData.interests}.
+Include places, timings, and activities.
+Keep it concise (15–20 lines).`;
     } else if (type === "packing-list") {
       const duration = incomingData.days || incomingData.duration || 3;
-      promptDraft = `Make a packing list for ${incomingData.destination}. 
-      Trip is for ${duration} days in ${incomingData.season}. 
-      Think about the weather and possible activities. 
-      Keep it simple (about 15–20 lines).`;
+      promptDraft = `Create a packing list for ${incomingData.destination}.
+Trip duration: ${duration} days.
+Season: ${incomingData.season}.
+Consider weather and activities.
+Keep it simple (15–20 lines).`;
     } else if (type === "budget-estimate") {
-      const travelDays = incomingData.days || incomingData.duration;
-      promptDraft = `Give a rough travel budget for ${incomingData.destination}. Trip lasts ${travelDays} days. 
-      Add cost ideas like hotel, food, travel and activities. 
-      Keep it easy to read (15–20 lines).`;
+      const travelDays = incomingData.days || incomingData.duration || 3;
+      promptDraft = `Provide a rough budget estimate for a ${travelDays}-day trip to ${incomingData.destination}.
+Include accommodation, food, transport, and activities.
+Keep it readable (15–20 lines).`;
     } else {
       return res.status(400).json({ msg: "Unknown request type" });
     }
 
-    const resultFromAI = await activeModel.generateContent(promptDraft);
+    /* -------- GEMINI CALL -------- */
+    const result = await activeModel.generateContent(promptDraft);
+    const text = result.response.text();
 
-    const cleanedText = resultFromAI.response.text();
+    return res.json({ response: text });
+  } catch (error) {
+    console.error("Gemini API Error:", error.message);
 
-    res.json({ response: cleanedText });
-  } catch (oops) {
-    console.log("Gemini error happened somewhere:", oops);
-
-    res.status(500).json({
-      msg: "Something went wrong generating response",
-      error: oops.message,
+    // graceful fallback
+    return res.status(200).json({
+      response:
+        "AI service is temporarily unavailable. Please try again later.",
     });
   }
 });
