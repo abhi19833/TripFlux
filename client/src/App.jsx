@@ -14,7 +14,6 @@ import LoginForm from "./components/Auth/LoginForm";
 import SignupForm from "./components/Auth/SignupForm";
 import ForgotPasswordForm from "./components/Auth/ForgotPasswordForm";
 import ResetPasswordForm from "./components/Auth/ResetPassword";
-import Profile from "./components/Profile";
 import HomePage from "./pages/HomePage";
 import ExpensesPage from "./pages/ExpensesPage";
 import MediaPage from "./pages/MediaPage";
@@ -50,7 +49,6 @@ function AuthenticatedApp() {
           <Route path="/" element={<HomePage />} />
           <Route path="/my-logs" element={<TravelLogsPage />} />
           <Route path="/ai-assistant" element={<AIAssistantPage />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />

@@ -76,17 +76,6 @@ export function AuthProvider({ children }) {
     return { data: updatedProfile, error: null };
   };
 
-  const loadProfile = async (userId) => {
-    try {
-      const res = await api.get(`/profile/${userId}`);
-      setProfile(res.data);
-      return { data: res.data, error: null };
-    } catch (err) {
-      console.error("Failed to load profile:", err);
-      return { data: null, error: err };
-    }
-  };
-
   const value = {
     user,
     profile,
@@ -95,7 +84,6 @@ export function AuthProvider({ children }) {
     signIn,
     signOut,
     updateProfile,
-    loadProfile,
   };
 
   return (
