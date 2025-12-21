@@ -43,7 +43,6 @@ Keep it readable (15–20 lines).`;
       return res.status(400).json({ msg: "Unknown request type" });
     }
 
-    /* -------- GEMINI CALL -------- */
     const result = await activeModel.generateContent(promptDraft);
     const text = result.response.text();
 
@@ -51,7 +50,6 @@ Keep it readable (15–20 lines).`;
   } catch (error) {
     console.error("Gemini API Error:", error.message);
 
-    // graceful fallback
     return res.status(200).json({
       response:
         "AI service is temporarily unavailable. Please try again later.",

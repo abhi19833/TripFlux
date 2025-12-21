@@ -53,7 +53,7 @@ router.post("/", auth, async (req, res) => {
     latitude,
     longitude,
     isPublic,
-    date, // ✅ ADD THIS
+    date,
   } = req.body;
 
   try {
@@ -71,7 +71,7 @@ router.post("/", auth, async (req, res) => {
       latitude,
       longitude,
       isPublic,
-      date: date || new Date(), // ✅ IMPORTANT
+      date: date || new Date(),
       userId: req.user.id,
     });
 
