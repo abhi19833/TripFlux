@@ -1,14 +1,12 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.MAILTRAP_HOST,
+  port: process.env.MAILTRAP_PORT,
+  auth: {
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASS,
+  },
+});
 
-const sendEmail = async (to, subject, text) => {
-  await resend.emails.send({
-    from: "TripFlux <abhishekk12733@gmail.com>",
-    to,
-    subject,
-    text,
-  });
-};
-
-module.exports = sendEmail;
+module.exports = transporter;

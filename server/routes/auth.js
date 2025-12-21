@@ -95,6 +95,7 @@ router.post("/forgot-password", async (req, res) => {
     }
 
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(200).json({
         msg: "If an account exists, a reset link has been sent",
@@ -115,33 +116,37 @@ router.post("/forgot-password", async (req, res) => {
 
     const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
-    await sendEmail(
-      user.email,
-      "Password Reset",
-      `Click this link to reset your password:\n\n${resetUrl}`
-    );
+    await transporter.sendMail({
+      from: `"TripFlux" <${process.env.EMAIL_FROM}>`,
+      to: user.email,
+      subject: "Password Reset",
+      html: `
+        <p>Hello,</p>
+        <p>You requested a password reset.</p>
+        <p>Click the link below to reset your password:</p>
+        <a href="${resetUrl}">${resetUrl}</a>
+        <p>This link will expire in 15 minutes.</p>
+      `,
+    });
 
     res.status(200).json({
       msg: "Password reset link sent to your email",
     });
   } catch (error) {
-    console.error("Forgot password error:", error.message);
+    console.error("Forgot password error:", error);
     res.status(500).json({ msg: "Server error" });
   }
 });
 router.post("/reset-password/:token", async (req, res) => {
   const { password } = req.body;
-  const resetToken = req.params.token;
+  const { token } = req.params;
 
   try {
     if (!password) {
       return res.status(400).json({ msg: "Password is required" });
     }
 
-    const hashedToken = require("crypto")
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
@@ -149,7 +154,9 @@ router.post("/reset-password/:token", async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({ msg: "Reset link is invalid or expired" });
+      return res.status(400).json({
+        msg: "Reset link is invalid or expired",
+      });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -160,9 +167,11 @@ router.post("/reset-password/:token", async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ msg: "Password reset successful" });
+    res.status(200).json({
+      msg: "Password reset successful",
+    });
   } catch (error) {
-    console.error("Reset password error:", error.message);
+    console.error("Reset password error:", error);
     res.status(500).json({ msg: "Server error" });
   }
 });
