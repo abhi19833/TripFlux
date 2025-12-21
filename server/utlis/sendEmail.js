@@ -1,14 +1,15 @@
-const nodemailer = require("nodemailer");
+import { Resend } from "resend";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.MAILTRAP_HOST,
-  port: Number(process.env.MAILTRAP_PORT),
-  secure: false,
-  auth: {
-    user: process.env.MAILTRAP_USER,
-    pass: process.env.MAILTRAP_PASS,
-  },
-  connectionTimeout: 20000,
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-module.exports = transporter;
+export const sendResetEmail = async (resetUrl) => {
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: process.env.DEV_EMAIL,
+    subject: "Reset Password",
+    html: `
+      <p>Click to reset password:</p>
+      <a href="${resetUrl}">${resetUrl}</a>
+    `,
+  });
+};
