@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
       const res = await api.post("/auth/signup", { username, email, password });
       localStorage.setItem("token", res.data.token);
 
-      setUser({ email, username }); // temporary user
+      setUser({ email, username });
       return { data: res.data, error: null };
     } catch (err) {
       return { data: null, error: err.response?.data || err.message };
@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
 
-      setUser({ email }); // temporary user
+      setUser({ email });
       return { data: res.data, error: null };
     } catch (err) {
       return { data: null, error: err.response?.data || err.message };

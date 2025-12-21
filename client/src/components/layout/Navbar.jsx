@@ -21,6 +21,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await signOut();
+      setMenuOpen(false);
       navigate("/login");
     } catch (err) {
       console.error("Sign out failed:", err);
@@ -44,43 +45,55 @@ export default function Navbar() {
           <Link to="/" className="flex items-center space-x-2">
             <div>
               <h1 className="text-lg font-bold text-gray-900">TripFlux</h1>
-              <p className="text-xs text-gray-500">Your Journey,Documented</p>
+              <p className="text-xs text-gray-500">Your Journey, Documented</p>
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.id}
-                  to={item.path}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-md font-medium transition-all ${
-                    isActive(item.path)
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </div>
+          {user && (
+            <div className="hidden md:flex items-center space-x-1">
+              {navLinks.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-md font-medium transition-all ${
+                      isActive(item.path)
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
 
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-gray-600 hover:bg-gray-50 rounded-md"
-          >
-            {menuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 px-4 py-2 rounded-md font-medium text-red-600 hover:bg-red-50"
+              >
+                <LogOut className="w-5 h-5" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          )}
+
+          {user && (
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden p-2 text-gray-600 hover:bg-gray-50 rounded-md"
+            >
+              {menuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          )}
         </div>
 
-        {menuOpen && (
+        {menuOpen && user && (
           <div className="md:hidden border-t border-gray-200 mt-2 pb-4">
             <div className="flex flex-col space-y-1 mt-2">
               {navLinks.map((item) => {
@@ -104,7 +117,7 @@ export default function Navbar() {
 
               <button
                 onClick={handleLogout}
-                className="flex rounded-md font-medium text-red-600 hover:bg-red-50 items-center space-x-3 px-4 py-3 "
+                className="flex rounded-md font-medium text-red-600 hover:bg-red-50 items-center space-x-3 px-4 py-3"
               >
                 <LogOut className="w-5 h-5" />
                 <span>Sign Out</span>
