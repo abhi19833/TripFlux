@@ -13,7 +13,14 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://trip-flux-kuo0p9vku-abhisheks-projects-ea51422e.vercel.app",
+    ],
+  })
+);
 app.use("/uploads", express.static("uploads"));
 
 const authRoutes = require("./routes/auth");
