@@ -74,7 +74,7 @@ function ItineraryPlanner() {
       setLoading(true);
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/ai-assistant",
+        "https://tripflux.onrender.com/api/ai-assistant",
         { type: "itinerary", ...formData },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -159,7 +159,8 @@ function PackingListGenerator() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/ai-assistant",
+        "https://tripflux.onrender.com/api/ai-assistant",
+
         { type: "packing-list", ...formData },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -246,7 +247,8 @@ function BudgetEstimator() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/ai-assistant",
+        "https://tripflux.onrender.com/api/ai-assistant",
+
         { type: "budget-estimate", ...formData },
         { headers: { Authorization: `Bearer ${token}` } }
       );

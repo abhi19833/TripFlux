@@ -16,7 +16,7 @@ export default function TravelLogDetail({ log: initialLog, onClose }) {
 
   const fetchLogDetails = async () => {
     if (!user) {
-      setErrorMsg("You need to loggedin to view travel log.");
+      setErrorMsg("You need to be logged in to view travel log.");
       setLoading(false);
       return;
     }
@@ -24,7 +24,13 @@ export default function TravelLogDetail({ log: initialLog, onClose }) {
     try {
       setLoading(true);
       const logId = initialLog?._id || id;
-      const res = await api.get(`/travelLogs/${logId}`);
+
+      const res = await api.get(`/travelLogs/${logId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
       setLog(res.data);
     } catch (err) {
       console.error("Failed to fetch travel log:", err);

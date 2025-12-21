@@ -42,12 +42,9 @@ export function AuthProvider({ children }) {
       const res = await api.post("/auth/signup", { username, email, password });
       localStorage.setItem("token", res.data.token);
 
-      const userRes = await api.get("/auth");
-      setUser(userRes.data);
-
+      setUser({ email, username }); // temporary user
       return { data: res.data, error: null };
     } catch (err) {
-      console.error("Signup failed:", err.response?.data || err.message);
       return { data: null, error: err.response?.data || err.message };
     }
   };
@@ -57,12 +54,9 @@ export function AuthProvider({ children }) {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
 
-      const userRes = await api.get("/auth");
-      setUser(userRes.data);
-
+      setUser({ email }); // temporary user
       return { data: res.data, error: null };
     } catch (err) {
-      console.error("Login failed:", err.response?.data || err.message);
       return { data: null, error: err.response?.data || err.message };
     }
   };

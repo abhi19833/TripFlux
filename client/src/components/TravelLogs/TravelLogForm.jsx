@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import axios from "axios";
+import api from "../../utils/api";
 import { X, MapPin, Calendar, FileText, Type } from "lucide-react";
 
 export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
@@ -74,13 +74,9 @@ export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
 
       let response;
       if (log) {
-        response = await axios.put(
-          `/api/travelLogs/${log._id}`,
-          payload,
-          config
-        );
+        response = await api.put(`/travelLogs/${log._id}`, payload, config);
       } else {
-        response = await axios.post("/api/travelLogs", payload, config);
+        response = await api.post("/travelLogs", payload, config);
       }
 
       console.log("Log saved:", response.data);

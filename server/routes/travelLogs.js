@@ -17,15 +17,11 @@ router.get("/public", async (req, res) => {
 });
 
 router.get("/", auth, async (req, res) => {
-  try {
-    const logs = await TravelLog.find({ userId: req.user.id }).sort({
-      date: -1,
-    });
-    res.json(logs);
-  } catch (err) {
-    console.error("fetch logs error:", err.message);
-    res.status(500).send("Server Error");
-  }
+  const logs = await TravelLog.find({ userId: req.user.id })
+    .populate("userId", "username")
+    .sort({ date: -1 });
+
+  res.json(logs);
 });
 
 router.get("/:id", auth, async (req, res) => {
@@ -48,7 +44,6 @@ router.get("/:id", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 router.post("/", auth, async (req, res) => {
   const {
     title,
@@ -58,6 +53,7 @@ router.post("/", auth, async (req, res) => {
     latitude,
     longitude,
     isPublic,
+    date, // ✅ ADD THIS
   } = req.body;
 
   try {
@@ -75,13 +71,13 @@ router.post("/", auth, async (req, res) => {
       latitude,
       longitude,
       isPublic,
+      date: date || new Date(), // ✅ IMPORTANT
       userId: req.user.id,
     });
 
     const saved = await log.save();
     res.status(201).json(saved);
   } catch (err) {
-    console.error("create log error:", err.message);
     res.status(500).send("Server Error");
   }
 });

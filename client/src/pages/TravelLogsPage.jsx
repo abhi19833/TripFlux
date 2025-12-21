@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import axios from "axios";
+import api from "../utils/api";
 import {
   Plus,
   MapPin,
@@ -49,8 +49,17 @@ export default function TravelLogsPage() {
 
     try {
       const config = { headers: { "x-auth-token": token } };
-      const res = await axios.get("/api/travelLogs", config);
-      let fetchedLogs = res.data;
+      const res = await api.get("/travelLogs");
+
+      let fetchedLogs = [];
+
+      if (Array.isArray(res.data)) {
+        fetchedLogs = res.data;
+      } else if (Array.isArray(res.data.logs)) {
+        fetchedLogs = res.data.logs;
+      } else if (Array.isArray(res.data.data)) {
+        fetchedLogs = res.data.data;
+      }
 
       if (filter !== "all") {
         fetchedLogs = fetchedLogs.filter((log) => log.status === filter);
@@ -81,7 +90,7 @@ export default function TravelLogsPage() {
 
     try {
       const config = { headers: { "x-auth-token": token } };
-      await axios.delete(`/api/travelLogs/${id}`, config);
+      await api.delete(`/travelLogs/${id}`);
       loadLogs();
     } catch (err) {
       console.error("Error deleting log:", err.response?.data || err.message);
