@@ -1,8 +1,10 @@
-import { Resend } from "resend";
+const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendResetEmail = async (resetUrl) => {
+const sendEmail = async (resetUrl) => {
+  console.log("SENDING EMAIL TO:", process.env.DEV_EMAIL);
+
   await resend.emails.send({
     from: "onboarding@resend.dev",
     to: process.env.DEV_EMAIL,
@@ -12,4 +14,8 @@ export const sendResetEmail = async (resetUrl) => {
       <a href="${resetUrl}">${resetUrl}</a>
     `,
   });
+
+  console.log("EMAIL SENT");
 };
+
+module.exports = sendEmail;

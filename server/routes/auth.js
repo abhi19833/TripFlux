@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
 const crypto = require("crypto");
-const transporter = require("../utlis/sendEmail");
+const sendEmail = require("../utlis/sendEmail");
 
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
@@ -90,10 +90,6 @@ router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 
   try {
-    if (!email) {
-      return res.status(400).json({ msg: "Email is required" });
-    }
-
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -103,7 +99,6 @@ router.post("/forgot-password", async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(20).toString("hex");
-
     const hashedToken = crypto
       .createHash("sha256")
       .update(resetToken)
@@ -111,32 +106,20 @@ router.post("/forgot-password", async (req, res) => {
 
     user.resetPasswordToken = hashedToken;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-
     await user.save();
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
-    await transporter.sendMail({
-      from: `"TripFlux" <${process.env.EMAIL_FROM}>`,
-      to: user.email,
-      subject: "Password Reset",
-      html: `
-        <p>Hello,</p>
-        <p>You requested a password reset.</p>
-        <p>Click the link below to reset your password:</p>
-        <a href="${resetUrl}">${resetUrl}</a>
-        <p>This link will expire in 15 minutes.</p>
-      `,
-    });
+    await sendEmail(resetUrl);
 
     res.status(200).json({
-      msg: "Password reset link sent to your email",
+      msg: "Password reset link sent",
     });
   } catch (error) {
-    console.error("Forgot password error:", error);
+    console.error(error);
     res.status(500).json({ msg: "Server error" });
   }
 });
+
 router.post("/reset-password/:token", async (req, res) => {
   const { password } = req.body;
   const { token } = req.params;
