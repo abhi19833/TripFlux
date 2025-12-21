@@ -15,12 +15,9 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
+    origin:
       "https://trip-flux-kuo0p9vku-abhisheks-projects-ea51422e.vercel.app",
-    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
