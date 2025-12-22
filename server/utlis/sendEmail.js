@@ -2,20 +2,28 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendResetPasswordEmail = async (to, resetLink, name) => {
-  if (!to) {
-    throw new Error("Recipient email missing");
+const sendResetPasswordEmail = async (to, resetLink, name = "User") => {
+  // HARD validation (important)
+  if (!to || !resetLink) {
+    throw new Error("Invalid email payload");
   }
 
   const msg = {
-    to: String(to).trim(),
-    from: String(process.env.FROM_EMAIL).trim(),
+    to: to.trim(),
+    from: process.env.FROM_EMAIL.trim(),
     subject: "Reset Your Password",
-    text: `Reset your password using this link: ${resetLink}`, // 👈 ADD TEXT
+
+    // ✅ ADD TEXT (THIS IS CRITICAL)
+    text: `Hello ${name}, reset your password using this link: ${resetLink}`,
+
+    // HTML is fine, but NOT alone
     html: `
-      <h2>Hello ${name ? name : "User"}</h2>
+      <h2>Hello ${name}</h2>
       <p>You requested to reset your password.</p>
-      <a href="${resetLink}">Reset Password</a>
+      <p>
+        <a href="${resetLink}">Reset Password</a>
+      </p>
+      <p>This link expires in 15 minutes.</p>
     `,
   };
 
