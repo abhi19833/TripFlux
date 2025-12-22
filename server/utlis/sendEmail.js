@@ -2,20 +2,20 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendResetPasswordEmail = async (to, resetLink, name = "User") => {
+const sendResetPasswordEmail = async (to, resetLink, name) => {
+  if (!to) {
+    throw new Error("Recipient email missing");
+  }
+
   const msg = {
-    to,
-    from: process.env.FROM_EMAIL,
+    to: String(to).trim(),
+    from: String(process.env.FROM_EMAIL).trim(),
     subject: "Reset Your Password",
+    text: `Reset your password using this link: ${resetLink}`, // 👈 ADD TEXT
     html: `
-      <h2>Hello ${name}</h2>
+      <h2>Hello ${name ? name : "User"}</h2>
       <p>You requested to reset your password.</p>
-      <p>
-        <a href="${resetLink}" target="_blank">
-          Click here to reset your password
-        </a>
-      </p>
-      <p>This link will expire in 15 minutes.</p>
+      <a href="${resetLink}">Reset Password</a>
     `,
   };
 
