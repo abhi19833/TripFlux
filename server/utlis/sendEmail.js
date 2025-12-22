@@ -1,21 +1,23 @@
-const { Resend } = require("resend");
+import sgMail from "@sendgrid/mail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendEmail = async (resetUrl) => {
-  console.log("SENDING EMAIL TO:", process.env.DEV_EMAIL);
-
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: process.env.DEV_EMAIL,
-    subject: "Reset Password",
+export const sendResetPasswordEmail = async (to, resetLink, name) => {
+  const msg = {
+    to,
+    from: process.env.FROM_EMAIL,
+    subject: "Reset Your Password",
     html: `
-      <p>Click to reset password:</p>
-      <a href="${resetUrl}">${resetUrl}</a>
+      <h2>Hello ${name || "User"}</h2>
+      <p>You requested to reset your password.</p>
+      <p>
+        <a href="${resetLink}" target="_blank">
+          Click here to reset your password
+        </a>
+      </p>
+      <p>This link will expire in 15 minutes.</p>
     `,
-  });
+  };
 
-  console.log("EMAIL SENT");
+  await sgMail.send(msg);
 };
-
-module.exports = sendEmail;
