@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Send } from "lucide-react";
-import api from "../api/axiosInstance";
+import api from "../../utils/api";
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");

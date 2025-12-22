@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import api from "../api/axiosInstance";
+import api from "../../utils/api";
 
 export default function ResetPassword() {
   const { token } = useParams();
