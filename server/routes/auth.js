@@ -6,7 +6,7 @@ const crypto = require("crypto");
 
 const User = require("../models/User");
 const auth = require("../middleware/auth");
-const { sendResetPasswordEmail } = require("../utils/emailService");
+const { sendResetPasswordEmail } = require("../utlis/sendEmail");
 
 /* =====================
    SIGNUP
