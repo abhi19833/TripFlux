@@ -1,14 +1,14 @@
-import sgMail from "@sendgrid/mail";
+const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export const sendResetPasswordEmail = async (to, resetLink, name) => {
+const sendResetPasswordEmail = async (to, resetLink, name = "User") => {
   const msg = {
     to,
     from: process.env.FROM_EMAIL,
     subject: "Reset Your Password",
     html: `
-      <h2>Hello ${name || "User"}</h2>
+      <h2>Hello ${name}</h2>
       <p>You requested to reset your password.</p>
       <p>
         <a href="${resetLink}" target="_blank">
@@ -21,3 +21,5 @@ export const sendResetPasswordEmail = async (to, resetLink, name) => {
 
   await sgMail.send(msg);
 };
+
+module.exports = { sendResetPasswordEmail };
