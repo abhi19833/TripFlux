@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://tripflux-j04l.onrender.com/api",
+  baseURL: "https://tripflux-j04l.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
