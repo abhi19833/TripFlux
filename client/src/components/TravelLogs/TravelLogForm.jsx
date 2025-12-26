@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import api from "../../utils/api";
-import { X, MapPin, Calendar, FileText, Type } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
   const { user } = useAuth();
@@ -16,7 +16,6 @@ export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
     latitude: "",
     longitude: "",
     status: "visited",
-    isPublic: false,
   });
 
   useEffect(() => {
@@ -29,7 +28,6 @@ export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
         latitude: log.latitude || "",
         longitude: log.longitude || "",
         status: log.status || "visited",
-        isPublic: log.isPublic || false,
       });
     }
   }, [log]);
@@ -62,7 +60,6 @@ export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
         status: formData.status,
         latitude: formData.latitude,
         longitude: formData.longitude,
-        isPublic: formData.isPublic,
       };
 
       const config = {
@@ -169,16 +166,6 @@ export default function TravelLogForm({ log, onClose, onSaveSuccess }) {
             <option value="wishlist">Wishlist</option>
             <option value="ongoing">Ongoing</option>
           </select>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="isPublic"
-              checked={formData.isPublic}
-              onChange={handleChange}
-            />
-            Public
-          </label>
 
           <div className="flex gap-4">
             <button

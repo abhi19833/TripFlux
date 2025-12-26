@@ -3,19 +3,6 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const TravelLog = require("../models/TravelLog");
 
-router.get("/public", async (req, res) => {
-  try {
-    const logs = await TravelLog.find({ isPublic: true })
-      .populate("userId", "username")
-      .sort({ date: -1 });
-
-    res.json(logs);
-  } catch (err) {
-    console.error("public logs error:", err.message);
-    res.status(500).send("Server Error");
-  }
-});
-
 router.get("/", auth, async (req, res) => {
   const logs = await TravelLog.find({ userId: req.user.id })
     .populate("userId", "username")
@@ -24,26 +11,6 @@ router.get("/", auth, async (req, res) => {
   res.json(logs);
 });
 
-router.get("/:id", auth, async (req, res) => {
-  try {
-    const log = await TravelLog.findById(req.params.id)
-      .populate("userId", "username")
-      .populate("members", "_id username");
-
-    if (!log) return res.status(404).json({ msg: "Log not found" });
-
-    const isOwner = log.userId._id.toString() === req.user.id;
-    const isMember = log.members.some((m) => m._id.toString() === req.user.id);
-
-    if (!log.isPublic && !isOwner && !isMember) {
-      return res.status(401).json({ msg: "Not allowed" });
-    }
-
-    res.json(log);
-  } catch (err) {
-    res.status(500).send("Server Error");
-  }
-});
 router.post("/", auth, async (req, res) => {
   const {
     title,
@@ -52,7 +19,7 @@ router.post("/", auth, async (req, res) => {
     status,
     latitude,
     longitude,
-    isPublic,
+
     date,
   } = req.body;
 
@@ -70,7 +37,7 @@ router.post("/", auth, async (req, res) => {
       status,
       latitude,
       longitude,
-      isPublic,
+
       date: date || new Date(),
       userId: req.user.id,
     });

@@ -268,22 +268,7 @@ export default function TravelLogsPage() {
                     <Eye className="w-4 h-4" />
                     <span>View</span>
                   </button>
-                  <button
-                    onClick={() => handleEdit(log)}
-                    className="flex items-center justify-center px-3 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate("/add-member");
-                    }}
-                    className="flex items-center justify-center px-3 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition"
-                    title="Add Member"
-                  >
-                    <UserPlus className="w-4 h-4" />
-                  </button>
+
                   <button
                     onClick={() => handleDelete(log._id)}
                     className="flex items-center justify-center px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition"

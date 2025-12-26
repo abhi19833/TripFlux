@@ -51,20 +51,6 @@ export default function TravelLogDetail({ log: initialLog, onClose }) {
     }
   }, [id, user, authLoading, location.search]);
 
-  const handleRemoveMember = async (memberId) => {
-    const confirmRemove = window.confirm("Remove this member?");
-    if (!confirmRemove) return;
-
-    try {
-      const logId = initialLog?._id || id;
-      await api.delete(`/travelLogs/${logId}/members/${memberId}`);
-      await fetchLogDetails();
-    } catch (err) {
-      console.error("Error removing member:", err);
-      setErrorMsg(err.response?.data?.msg || "Could not remove member.");
-    }
-  };
-
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -124,13 +110,7 @@ export default function TravelLogDetail({ log: initialLog, onClose }) {
                   ? "bg-purple-500 text-white"
                   : "bg-gray-500 text-white"
               }`}
-            >
-              {log.status
-                ? log.status.charAt(0).toUpperCase() + log.status.slice(1)
-                : log.isPublic
-                ? "Public"
-                : "Private"}
-            </span>
+            ></span>
           </div>
         </div>
 
@@ -164,95 +144,6 @@ export default function TravelLogDetail({ log: initialLog, onClose }) {
               </p>
             </div>
           )}
-
-          {log.notes && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Notes
-              </h2>
-              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-                {log.notes}
-              </p>
-            </div>
-          )}
-
-          {log.photos?.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                Photos
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {log.photos.map((photo, i) => (
-                  <img
-                    key={i}
-                    src={photo}
-                    alt={`photo-${i + 1}`}
-                    className="w-full h-48 object-cover rounded-lg shadow-sm"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {log.expenses?.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                Expenses
-              </h2>
-              <ul className="space-y-2">
-                {log.expenses.map((ex) => (
-                  <li
-                    key={ex._id}
-                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
-                  >
-                    <span className="text-gray-700">
-                      {ex.description} ({ex.category})
-                    </span>
-                    <span className="font-semibold text-gray-900">
-                      ${ex.amount.toFixed(2)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="mt-8 border-t pt-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Members
-            </h2>
-
-            {log.members?.length ? (
-              <ul className="space-y-2">
-                {log.members.map((member) => (
-                  <li
-                    key={member._id}
-                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <UserPlus className="w-5 h-5 text-gray-500" />
-                      <span className="font-medium text-gray-800">
-                        {member.username}{" "}
-                        {member._id === log.userId._id && "(Owner)"}
-                      </span>
-                    </div>
-                    {user &&
-                      log.userId._id === user.id &&
-                      member._id !== log.userId._id && (
-                        <button
-                          onClick={() => handleRemoveMember(member._id)}
-                          className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                          Remove
-                        </button>
-                      )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No members added yet.</p>
-            )}
-          </div>
 
           <div className="flex gap-4 mt-8 border-t pt-4">
             <button
