@@ -36,13 +36,7 @@ TripFlux is a full-stack travel management application designed to help users pl
 ---
 
 ## Demo Video
-
-Project walkthrough video 👇  
-(Using video instead of screenshots)
-
-https://your-video-link-here
-
-> Upload the video to YouTube / Drive and paste the public link here.
+https://github.com/user-attachments/assets/145baa33-4898-4dc6-a3da-feccbd74667b
 
 ---
 
@@ -54,6 +48,9 @@ https://your-video-link-here
 ---
 ## Project structure
 - tripflux/
+
+
+
 - ├── client/
 - ├── server/
 - └── README.md
