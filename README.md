@@ -48,8 +48,8 @@ https://your-video-link-here
 
 ## Live Project
 
-- Frontend: https://tripflux.vercel.app  
-- Backend: https://tripflux.onrender.com  
+- Frontend: https://trip-flux.vercel.app
+- Backend: https://tripflux-j04l.onrender.com  
 
 ---
 ## Project structure
@@ -61,7 +61,7 @@ https://your-video-link-here
 ## Run Locally
 
 ```bash
-git clone https://github.com/your-username/tripflux.git
+git clone https://github.com/abhi19833/TripFlux.git
 
 cd tripflux/client
 npm install
@@ -92,5 +92,5 @@ CLOUDINARY_SECRET=
 ---
 ## Author
 
-Abhishek Kurhade
-GitHub: https://github.com/your-username
+Abhishek 
+GitHub : https://github.com/abhi19833
