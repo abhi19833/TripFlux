@@ -37,7 +37,7 @@ const ExpenseList = ({ expenses, onDelete, onEdit }) => {
 
             <div className="flex items-center space-x-4">
               <span className="text-green-600 font-bold">
-                ${Number(expense.amount).toFixed(2)}
+                ₹{Number(expense.amount).toFixed(2)}
               </span>
               <button
                 onClick={() => onEdit(expense)}
