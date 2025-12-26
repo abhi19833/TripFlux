@@ -8,9 +8,6 @@ const User = require("../models/User");
 const auth = require("../middleware/auth");
 const { sendResetPasswordEmail } = require("../utlis/sendEmail");
 
-/* =====================
-   SIGNUP
-===================== */
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -55,9 +52,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-/* =====================
-   LOGIN
-===================== */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -93,9 +87,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-/* =====================
-   GET LOGGED-IN USER
-===================== */
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -106,16 +97,12 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-/* =====================
-   FORGOT PASSWORD
-===================== */
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
 
-    // Security best practice
     if (!user) {
       return res.json({ msg: "If email exists, reset link sent" });
     }
@@ -143,9 +130,6 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-/* =====================
-   RESET PASSWORD
-===================== */
 router.post("/reset-password/:token", async (req, res) => {
   try {
     const { password } = req.body;
