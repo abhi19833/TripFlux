@@ -42,8 +42,7 @@ https://github.com/user-attachments/assets/145baa33-4898-4dc6-a3da-feccbd74667b
 
 ## Live Project
 
-- Frontend: https://trip-flux.vercel.app
-- Backend: https://tripflux-j04l.onrender.com  
+- Frontend: https://trip-flux.vercel.app 
 
 ---
 ## Project structure
