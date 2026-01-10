@@ -22,6 +22,9 @@ const aiAssistantRoutes = require("./routes/aiAssistant");
 const travelLogsRoutes = require("./routes/travelLogs");
 const expensesRoutes = require("./routes/expenses");
 const mediaRoutes = require("./routes/media");
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ai-assistant", aiAssistantRoutes);
