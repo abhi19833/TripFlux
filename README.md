@@ -1,6 +1,6 @@
 # TripFlux
 
-TripFlux is a full-stack travel management application designed to help users plan, track, and document their journeys effortlessly. Users can create travel logs, manage trips by status (visited, ongoing, or wishlist), and store photos and videos in one organized space. The AI Travel Assistant helps generate itineraries, packing lists, and budget estimates based on user preferences. TripFlux also includes expense tracking to manage travel spending effectively. With a clean and intuitive interface, the platform focuses on simplicity and usability. All travel data is securely stored and accessible anytime. TripFlux transforms travel experiences into structured, memorable stories.
+TripFlux is a full-stack travel web application designed to help users plan, track, and document their journeys in one place. Users can create travel logs, organize trips by status (visited, ongoing, or wishlist), and securely upload photos. The application includes an AI Travel Assistant that generates itineraries, packing lists, and budget estimates based on user preferences. Expense tracking features help users monitor travel spending effectively. With a clean and intuitive interface, TripFlux focuses on simplicity, usability, and secure access to travel data anytime, turning trips into well-structured and memorable experiences.
 
 ---
 
