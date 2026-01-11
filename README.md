@@ -6,13 +6,21 @@ TripFlux is a full-stack travel web application designed to help users plan, tra
 
 ## What You Can Do
 
-- Create an account and log in securely
-- Create and manage trips
-- Track expenses for each trip
-- Add notes and travel memories
-- Upload trip photos
-- Reset password using email link
-- View everything from a single dashboard
+- Create an account and log in securely using JWT authentication
+- Create trips and organize them by status:
+  - Visited
+  - Ongoing
+  - Wishlist
+- Track expenses separately for each trip
+- Add notes to record travel memories and important details
+- Upload and store trip photos securely using Cloudinary
+- Use the AI Travel Assistant to generate:
+  - Travel itineraries
+  - Packing lists
+  - Budget estimates
+- Edit or delete trips, expenses, notes, and photos
+- Reset your password securely using an email-based reset link
+- Access your travel data anytime from any device
 
 ---
 
